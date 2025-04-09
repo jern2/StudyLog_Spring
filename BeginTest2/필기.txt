@@ -1,0 +1,96 @@
+# BeginTest2
+
+## 프로젝트 생성
+- "BeginTest2" + Spring MVC Project > "com.test.begin2" > Finish
+
+## 기본 설정
+- 자바 버전 > 11
+	- pom.xml(메이븐 설정 파일)
+	- Project facets
+- 스프링 버전 > 5.0.7
+	- pom.xml
+- Servlet 버전 > 3.1.0
+- JSP 버전 > 2.3.3
+- 롬복 추가
+- log4j 버전 > 1.2.17
+- jUnit 버전 > 4.12
+
+## 파일
+
+- 일반적인 의존 관계 구현 > 필요한 사람이 직접 객체를 만들어서 사용
+- "com.test.begin2.di6" > "Main.java"
+                        > "Service.java"
+                        > "Hong.java"
+
+- 의존 주입(DI) 패턴을 적용 > 생성자 or Setter 사용                        
+- "com.test.begin2.di7" > "Main.java"
+                        > "Service.java"
+                        > "Hong.java"
+
+- 객체 관리 > 스프링 컨테이너에게 맡기
+- "com.test.begin2.di8" > "Main.java"
+                        > "Service.java"
+                        > "Hong.java"
+                        > "di8.xml"
+
+
+- "com.test.begin2.di9" > "Main.java"
+                        > "Service.java"
+                        > "Hong.java"
+- 단위 테스트
+	- src/test/java > "com.test.begin2.di9" > "DITest.java"
+
+
+---
+
+## Spring AOP, Aspect Oriented Programming
+- 관점 지향 프로그래밍
+- 코드 작성 > 주업무 코드 + 보조업무 코드
+
+- 의존성 추가 > pom.xml
+
+### AOP 용어
+- Core concern
+- Cross-cutting concern
+- Target
+- Proxy
+- JoinPoint
+- Pointcut
+- Aspect
+- Adivce
+
+### 파일
+- 메모장
+- "com.test.begin2.aop"
+	- "Main.java"		//메인
+	- "Memo.java"(I)	//메인 업무 객체(인터페이스)
+	- "MemoImpl.java"(C)//메인 업무 객체(구현체)
+	
+	- "Logger.java"(C) 	//보조 업무 객체(로그)
+	
+	- "memo.xml"		//스프링 설정 파일
+	
+
+### 명명법
+- 클래스 + 인터페이스
+- IUser.java(I) + User.java(C) + Administrator.java(C)
+- User.java(I) + UserImpl.java(C) > 상속된 클래스가 딱 1개일 때
+	
+
+
+
+
+
+
+
+
+
+	
+
+
+
+
+
+
+
+	

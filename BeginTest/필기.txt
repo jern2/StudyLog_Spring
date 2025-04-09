@@ -1,0 +1,81 @@
+# BeginTest
+
+## 프로젝트 생성
+- "BeginTest" + Spring MVC Project > "com.test.begin" > Finish
+
+## 현재 프로젝트 > 버전? > 수정
+- 자바 버전 > 11
+	- pom.xml(메이븐 설정 파일)
+	- Project facets
+- 스프링 버전 > 5.0.7
+	- pom.xml
+
+## IoC, Inversion of Control, 제어의 역전
+- 프로그램의 제어 흐름(객체 생성)을 개발자가 아닌 프레임워크가 관리하는 개념
+
+## DI, Dependency Injection, 의존(성) 주입
+- IoC 구현하는 방법 중 하나
+- 디자인 패턴
+- 객체가 필요로 하는 의존성을 외부에서 주입해주는 패턴
+
+
+- src/main/java > "com.test.begin.di1"
+						> "Main.java"
+						> "Service.java"
+						> "Hong.java"
+						> "Lee.java"
+						
+- src/main/java > "com.test.begin.di2"
+						> "Main.java"
+						> "Service.java"
+						> "Hong.java"
+						> "Employee.java"(I)
+
+- src/main/java > "com.test.begin.di3"
+						> "Main.java"
+						> "Service.java"
+						> "Hong.java"
+						> "Employee.java"(I)
+						> "di3.xml"
+
+- src/main/java > "com.test.begin.di4"
+						> "Main.java"
+						> "Service.java"
+						> "Hong.java"
+						> "Employee.java"(I)
+						> "di4.xml"
+
+- src/main/java > "com.test.begin.di5"
+						> "Main.java"
+						> "Service.java"
+						> "Hong.java"
+
+
+*** 스프링 환경에서는 클래스 객체를 생성~관리~소멸까지를
+	1. 개발자가 직접
+	2. 스프링이 조작 > 스프링 컨테이너
+		2.1 XML
+		2.2 Annotation
+		2.3 Java Config
+		
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+	
+	
+
+
+
+	
