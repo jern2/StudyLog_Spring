@@ -1,0 +1,81 @@
+# MyBatisTest
+- DB 연동
+- JDBC(코드 반복, SQL 작성 불편)
+	- Spring JDBC
+	- MyBatis + Spring
+	- JPA + Spring Boot
+
+## MyBatis
+- 영속성 계층(데이터베이스 조작)
+- JDBC 역할
+- SQL Mapper Framework > SQL의 실행 결과를 객체로 '매핑'해준다.(*****)
+- 생산성, 유지보수 > 장점
+- SQL 코드와 자바 코드를 분리 > XML
+
+## JPA
+- 영속성 계층(데이터베이스 조작)
+- JDBC 역할
+- ORM
+
+
+## 프로젝트 생성
+- "MyBatisTest" + Spring MVC Project > "com.test.mybatis" > Finish
+
+## 기본 설정
+- 자바 버전 > 11
+	- pom.xml(메이븐 설정 파일)
+	- Project facets
+- 스프링 버전 > 5.0.7
+	- pom.xml
+- Servlet 버전 > 3.1.0
+- JSP 버전 > 2.3.3
+- 롬복 추가
+- log4j 버전 > 1.2.17
+- jUnit 버전 > 4.12
+
+## MyBatis 설정
+- MyBatis 의존성 추가 > 4개
+- DBCP 의존성 추가 > 2개
+- 설정
+	- root-context.xml
+
+## 단위 테스트
+- Commons DBCP
+- HikariCP
+- MyBatis
+
+
+## 파일
+- MyBatisTest > "script.sql"
+- "com.test.mybatis.controller" > "MyBatisController.java"
+- "com.test.mybatis.model" > "MyBatisDAO.java"(I)
+                           > "MyBatisDAOImpl.java"(C)
+						   > "AddressDTO.java"
+						   > "InsaDTO.java"
+- views > "result.jsp"
+        > "list.jsp"
+        > "add.jsp"
+        
+
+## log4j(for java)
+- 의존성 > pom.xml
+- DB 관련 로그(X) > 추가(O)
+	- root-context.xml > DataSource(DBCP) 수정
+	- src/main/resources > log4j.xml > 수정
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+

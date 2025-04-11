@@ -1,0 +1,145 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="mybatis">
+	
+	<!-- m1 -->
+	<insert id="m1">
+		insert into tblAddress values (seqAddress.nextVal, '홍길동', 20, '서울시 강남구 역삼동', 'm')
+	</insert>
+	
+	<!-- m2 -->
+	<delete id="m2" parameterType="String">
+		delete from tblAddress where seq = #{seq}
+	</delete>
+	
+	<!-- m3 -->
+	<update id="m3" parameterType="map">
+		update tblAddress set
+			age = #{age},
+			address = #{address}
+				where seq = #{seq}
+	</update>
+	
+	<!-- m4 -->
+	<insert id="m4" parameterType="adto">
+		insert into tblAddress values (seqAddress.nextVal, #{name}, #{age}, #{address}, #{gender})
+	</insert>
+	
+	<!-- m5 -->
+	<select id="m5" resultType="Integer">
+		select count(*) from tblAddress
+	</select>
+	
+	<!-- m6 -->
+	<select id="m6" parameterType="String" resultType="adto">
+		select * from tblAddress where seq = #{seq}
+	</select>
+	
+	<!-- m7 -->
+	<select id="m7" resultType="String">
+		select name from tblAddress order by name asc
+	</select>
+	
+	<!-- m8 -->
+	<select id="m8" resultType="adto">
+		select * from tblAddress order by name asc
+	</select>
+	
+	<!-- m9 -->
+	<!--  
+		MyBatis 바인딩 표현식
+		1. #{}: 데이터 바인딩
+		2. ${}: 식별자 바인딩
+	-->
+	<select id="m9" parameterType="String" resultType="Integer">
+		select count(*) from ${tableName}
+	</select>
+	
+	<!-- m10 -->
+	<select id="m10" parameterType="Integer" resultType="adto">
+		<!-- 
+		select * from tblAddress
+			where age &lt; #{age} 
+		-->
+		
+		select * from tblAddress
+			<![CDATA[
+			where age < #{age}
+			]]> 
+			
+	</select>
+	
+	<!-- m11 -->
+	<select id="m11" parameterType="String" resultType="adto">
+		<!-- select * from tblAddress
+			where address like '%' || #{word} || '%' -->
+		select * from tblAddress
+			where address like '%${word}%'
+	</select>
+	
+	<!-- m12 -->
+	<!--  
+		동적쿼리
+		- 상황에 따라 쿼리를 조작
+		- <if>, <choose>, <foreach>.. > JSTL 역할
+	-->
+	<select id="m12" parameterType="String" resultType="adto">
+	
+		<!-- 
+		<if test='gender == "m"'>
+		select * from tblAddress where gender = 'm'
+		</if>
+		<if test='gender == "f"'>
+		select * from tblAddress where gender = 'f'
+		</if>
+		<if test="gender == 'all'.toString()">
+		select * from tblAddress
+		</if>
+		-->
+		
+		<!-- 
+		select * from tblAddress
+			<if test='gender == "m"'>
+			where gender = 'm'
+			</if>
+			<if test='gender == "f"'>
+			where gender = 'f'
+			</if> 
+		-->
+		
+		select * from tblAddress
+			<if test='gender != "all"'>
+			where gender = #{gender}
+			</if>
+		
+	</select>	
+	
+	<!-- m13 -->
+	<select id="m13" parameterType="adto" resultType="adto">
+		
+		select * from tblAddress where 1=1 
+		
+			<if test="age != null">
+				and age > #{age}
+			</if>
+			<if test="gender != null">
+				and gender = #{gender}
+			</if>
+			<if test="address != null">
+				and address like '%' || #{address} || '%'
+			</if>
+			
+		
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+

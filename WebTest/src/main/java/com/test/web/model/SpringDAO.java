@@ -7,6 +7,10 @@ import java.sql.ResultSet;
 import java.sql.SQLException;
 import java.sql.Statement;
 
+import org.springframework.stereotype.Component;
+import org.springframework.stereotype.Repository;
+
+@Repository
 public class SpringDAO {
 
 	private Connection conn;
@@ -55,6 +59,12 @@ public class SpringDAO {
 		}
 		
 		return 0;
+	}
+
+	public void add(AddressDTO dto) {
+		
+		System.out.println("결과: " + dto);
+		
 	}
 		
 }

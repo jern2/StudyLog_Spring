@@ -7,3 +7,9 @@ grant connect, resource, dba to spring;
 alter user spring default tablespace users;
 
 show user;
+
+select * from tblInsa;
+
+
+
+

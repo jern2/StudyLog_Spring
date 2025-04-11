@@ -16,6 +16,12 @@
 - jUnit 버전 > 4.12
 
 
+## Servlet vs Spring
+- 스프링 > 서블릿을 사용하지 않는다.(***)
+         > 순수한 자바 클래스(POJO, Plain Old Java Object)를 사용한다.
+- web.xml > DispatcherServlet(***) 서블릿 > 스프링에서 유일하게 사용하는 서블릿
+
+
 ## 파일
 - "com.test.web.controller"
 
@@ -32,9 +38,48 @@
 
 - com.test.web.controller > "Ex02Controller.java"
 - "com.test.web.model" > "SpringDAO.java"
-                       > 
-                       
 - views > "ex02.jsp"
+- 기본 구조 + 의존 주입 구현
+- XML 기반
+
+
+
+
+- com.test.web.controller > "Ex03Controller.java"
+- views > "ex03.jsp"
+- 기본 MVC 구조 + 어노테이션
+
+
+
+
+- com.test.web.controller > "Ex04Controller.java"
+						  > "Ex041Controller.java"
+						  > "Ex042Controller.java"
+- views > "ex04.jsp"
+        > "ex041.jsp"
+        > "ex042.jsp"
+- 기본 MVC 구조 + 어노테이션 + 확장
+- 기존 Servlet 방식 > 가상 주소 1개당 = Java 1개 + JSP 1개
+                    > 파일 개수가 많아지는 단점
+
+
+
+- com.test.web.controller > "Ex05Controller.java"
+						  > "Ex05OkController.java"
+- views > "ex05.jsp"
+        > "ex05_get.jsp"
+        > "ex05_post.jsp"
+- 기본 MVC 구조 + 어노테이션 + 확장
+
+
+
+
+
+- com.test.web.controller > "Ex06Controller.java"
+- views > "ex06.jsp"
+        > "ex06_get.jsp"
+        > "ex06_post.jsp"
+- 기본 MVC 구조 + 어노테이션 + 확장
 
 
 
@@ -42,9 +87,29 @@
 
 
 
+- com.test.web.controller > "Ex07Controller.java"
+- com.test.web.model > "AddressDTO.java"
+- views > "ex07.jsp"
+        > "ex07ok.jsp"
+- web.xml > 인코딩 필터 추가        
+- 서버측에서 데이터 수신하기(***)
+
+        
 
 
 
+- com.test.web.controller > "Ex08Controller.java"
+- views > "ex08.jsp"
+- 컨트롤러의 반환값 종류
+- 의존성 추가 > pom.xml
+
+
+
+
+- com.test.web.controller > "Ex09Controller.java"
+- views > "ex09.jsp"
+- 의존 주입
+ 
 
 
 

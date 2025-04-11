@@ -14,7 +14,7 @@
 	<!-- ex01.jsp -->
 	<h1>결과</h1>
 	
-	<div>name: ${name}</div>
+	<div>name: ${requestScope.name}</div>
 	
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script src="https://bit.ly/4cMuheh"></script>
