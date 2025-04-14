@@ -1,5 +1,12 @@
 -- MyBatisTest > script.sql
 
+delete from tblMemo;
+delete from tblInfo;
+delete from tblAddress;
+
+drop sequence seqAddress;
+
+
 create table tblAddress (
     seq number primary key,
     name varchar2(30) not null,
@@ -21,6 +28,49 @@ desc tblInsa;
 
 commit;
 
+insert into tblAddress values (seqAddress.nextVal, '가가가', 20, '서울시 강남구', 'm');
+insert into tblAddress values (seqAddress.nextVal, '나나나', 20, '서울시 강남구', 'f');
+insert into tblAddress values (seqAddress.nextVal, '다다다', 20, '서울시 강남구', 'm');
+
+select seqAddress.nextVal from dual; --65
+
+insert all
+into tblAddress values ((select max(seq) + 1 from tblAddress), '가가가', 20, '서울시 강남구', 'm')
+into tblAddress values ((select max(seq) + 2 from tblAddress), '나나나', 20, '서울시 강남구', 'f')
+into tblAddress values ((select max(seq) + 3 from tblAddress), '다다다', 20, '서울시 강남구', 'm')
+select * from dual;
+
+insert all 
+ into tblAddress (seq, name, age, address, gender) values ((select max(seq) 
++ 0 from tblAddress), '라라라', '20', '서울시', 'm') 
+into tblAddress (seq, name, age, address, 
+gender) values ((select max(seq) + 1 from tblAddress), '마마마', '20', '서울시', 'm') 
+select * from 
+dual;
+
+insert into tblAddress (seq, name, age, address, gender)
+select seqAddress.nextVAl, '가가가', 20, '서울시', 'm' from dual
+union all
+select seqAddress.nextVAl, '나나나', 20, '서울시', 'm' from dual 
+union all
+select seqAddress.nextVAl, '다다다', 20, '서울시', 'm' from dual;
+
+
+insert into tblAddress (seq, name, age, address, gender)
+select seqAddress.nextVal, a.* from (  
+    select ?, ?, ?, ? from dual
+    union all  
+    select ?, ?, ?, ? from dual	 
+) a;
+
+
+insert all 
+into tblAddress (seq, name, age, address, gender) values ((select (max(seq) + 1 
++ 0) from tblAddress), '라라라', '20', '서울시', 'm') 
+into tblAddress (seq, name, age, address, gender) 
+values ((select (max(seq) + 1 + 1) from tblAddress), '마마마', '20', '서울시', 'm') 
+select * from dual;
+
 
 
 insert into tblAddress values (seqAddress.nextVal, '강아지', 3, '서울시 강남구 역삼동 한독빌딩 8층', 'm');
@@ -36,7 +86,9 @@ insert into tblAddress values (seqAddress.nextVal, '독수리', 3, '서울시 �
 
 commit;
 
-select * from tblAddress;
+-- 101	바바바	20	서울시	m
+-- 122	바바바	20	서울시	m
+select * from tblAddress order by seq desc;
 select * from tblInsa;
 
 select * from tblAddress where age < 22;
@@ -111,3 +163,55 @@ insert into tblMemo values (seqMemo.nextVal, '집이 좁아요.', default, 8);
 
 
 commit;
+
+
+
+
+select * from tblAddress; --10명
+select * from tblInfo; --5명의 상세정보
+
+select * from tblAddress a inner join tblInfo i on a.seq = i.seq;
+select * from tblAddress a left outer join tblInfo i on a.seq = i.seq;
+
+commit;
+select * from tblAddress a
+			left outer join tblInfo i
+				on a.seq = i.seq;
+
+select * from tblAddress a
+			left outer join tblMemo m
+				on a.seq = m.aseq;
+
+
+
+
+
+-- 게시판(게시물+댓글)
+create table tblBoard(
+    seq number primary key,                 --글번호(PK)
+    subject varchar2(100) not null,         --제목
+    name varchar2(30) not null,             --작성자
+    regdate date default sysdate not null   --작성일
+);
+
+insert into tblBoard values (1, '게시판입니다.', '홍길동', default);
+insert into tblBoard values (2, 'MyBatis 수업예제입니다.', '홍길동', default);
+insert into tblBoard values (3, '쿼리가 이상해요.', '홍길동', default);
+insert into tblBoard values (4, '조인 결과를 가져오는 방법', '홍길동', default);
+insert into tblBoard values (5, '월요일입니다;;', '홍길동', default);
+
+create table tblComment(
+    seq number primary key,                         --댓글번호(PK)
+    subject varchar2(100) not null,                 --댓글
+    name varchar2(30) not null,                     --작성자
+    regdate date default sysdate not null,          --작성일
+    bseq number not null references tblBoard(seq)   --부모글(FK)
+);
+
+
+
+
+
+
+
+

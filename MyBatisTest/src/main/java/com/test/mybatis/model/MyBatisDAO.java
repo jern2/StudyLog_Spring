@@ -45,9 +45,39 @@ public interface MyBatisDAO {
 	//정적 쿼리
 	//매개변수 + 퀴리 > #{}
 	//동적 쿼리 > 상황에 따라 SQL 구문이 변환
+	//- <if>
 	List<AddressDTO> m12(String gender);
 	
 	List<AddressDTO> m13(AddressDTO dto);
+	
+	//- <choose>
+	List<AddressDTO> m14(String type);
+	
+	//- 열거형 조건
+	List<InsaDTO> m15(List<String> search);
+	
+	//- insert x 반복
+	void m16(List<AddressDTO> data);
+	
+	//- insert
+	void m17add(AddressDTO dto);
+	
+	//- max(seq)
+	int m17get();
+	
+	void m17add2(AddressDTO dto);
+	
+	
+	List<AddressInfoDTO> m18a();
+	
+	List<AddressDTO> m18b();
+	
+	
+	List<AddressMemoDTO> m19a();
+	
+	List<AddressDTO> m19b();
+	
+	List<AddressDTO> m19c();
 
 }
 

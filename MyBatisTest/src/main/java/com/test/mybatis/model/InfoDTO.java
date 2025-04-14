@@ -1,6 +1,5 @@
 package com.test.mybatis.model;
 
-
 import lombok.Getter;
 import lombok.Setter;
 import lombok.ToString;
@@ -8,12 +7,13 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AddressDTO {
+public class InfoDTO {
 	private String seq;
-	private String name;
-	private String age;
-	private String address;
-	private String gender;
-	
-	
+	private String school;
+	private String country;
 }
+
+
+
+
+

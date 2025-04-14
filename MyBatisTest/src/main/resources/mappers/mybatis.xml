@@ -120,6 +120,7 @@
 	<!-- m13 -->
 	<select id="m13" parameterType="adto" resultType="adto">
 		
+		<!-- 
 		select * from tblAddress where 1=1 
 		
 			<if test="age != null">
@@ -130,12 +131,251 @@
 			</if>
 			<if test="address != null">
 				and address like '%' || #{address} || '%'
-			</if>
+			</if> 
+		-->
+		
+		select * from tblAddress
+			<where>
+				<if test="age != null">
+					and age > #{age}
+				</if>
+				<if test="gender != null">
+					and gender = #{gender}
+				</if>
+				<if test="address != null">
+					and address like '%' || #{address} || '%'
+				</if>
+			</where>
 			
+	</select>
+	
+	<!-- m14 -->
+	<select id="m14" parameterType="String" resultType="adto">
+		
+		<!--  
+			아래의 경우에만 발생하는 상황(오류)
+			1. parameterType="String"
+			2. 비교 조건 검사(if, when..)
+			
+			<if   test="type == 'm'">
+			<when test="type == 'm'">
+			- 'm' > char로 인식 > 숫자형
+			
+			해결책
+			- 우측의 'm'을 문자열로 인식하게 변경
+			1. toString()
+			2. "" 
+			
+		-->
+		
+		<!-- 
+		select * from tblAddress
+			<choose>
+				<when test="type == 'm'.toString()">
+					where gender = 'm'
+				</when>
+				<when test='type == "f"'>
+					where gender = 'f'
+				</when>
+				<otherwise>
+					
+				</otherwise>
+			</choose> 
+		-->
+		
+		select * from tblAddress
+			<where>
+				<if test="gender != null">
+				gender = #{type}
+				</if>
+			</where>
 		
 	</select>
 	
+	<!-- m15 -->
+	<select id="m15" parameterType="java.util.ArrayList" resultType="idto">
+	
+		<!--  
+			map.put("buseo1", "영업부");
+			map.put("buseo2", "총무부");
+			map.put("buseo3", "개발부");
+			
+			where buseo in (#{buseo1}, #{buseo2}, #{buseo3});
+		-->
+	
+		<!--  
+			select * from tblInsa
+				where
+					'영업부'
+					'총무부'
+					'개발부'
+		-->
+	
+		
+		<!-- 
+		select * from tblInsa
+			<where>
+				<foreach collection="list" item="item" index="index">
+					#{item}
+				</foreach>
+			</where>  
+		-->
+		
+			
+			
+		<!--  
+			select * from tblInsa
+				where
+					buseo in (
+					'영업부'
+					,
+					'총무부'
+					,
+					'개발부'
+					,
+					)
+		-->
+		select * from tblInsa
+			<where>
+				<foreach collection="list" item="item" index="index" open="buseo in (" close=")" separator=","> 
+					#{item}
+				</foreach>
+			</where>
+			
+	</select>
+	
+	<!-- m16 -->
+	<!-- <insert id="m16" parameterType="java.util.List">
+		<foreach collection="list" item="item" open="insert all" close="select * from dual" separator=" " index="index">
+			
+			into tblAddress (seq, name, age, address, gender)
+			values (seqAddress.nextVal, #{item.name}, #{item.age}, #{item.address}, #{item.gender})
+			
+		</foreach>
+	</insert> -->
+	
+	<insert id="m16" parameterType="java.util.List">
+    	insert into tblAddress (seq, name, age, address, gender)
+    		<foreach collection="list" item="item" separator=" union all " open="select seqAddress.nextval, a.* from (">
+        		select #{item.name}, #{item.age}, #{item.address}, #{item.gender} from dual
+    		</foreach>
+    	) a
+</insert>
+
+
+
+	<insert id="m17add" parameterType="adto">
+		insert into tblAddress values (seqAddress.nextVal, #{name}, #{age}, #{address}, #{gender})
+	</insert>
+	
+	<select id="m17get" resultType="Integer">
+		select max(seq) from tblAddress
+	</select>
+	
+	<insert id="m17add2" parameterType="adto">
+		
+		<selectKey keyProperty="seq" order="BEFORE" resultType="String">
+			select seqAddress.nextVal from dual
+		</selectKey>
+	
+		insert into tblAddress values (#{seq}, #{name}, #{age}, #{address}, #{gender})
+		
+	</insert>
+	
+	<select id="m18a" resultType="com.test.mybatis.model.AddressInfoDTO">
+		
+		select  
+			a.seq as aseq, name, age, gender, address,
+			i.seq as iseq, school, country
+		from tblAddress a
+			left outer join tblInfo i
+				on a.seq = i.seq
+		
+	</select>
+	
+	<resultMap type="com.test.mybatis.model.InfoDTO" id="infoMap">
+		<id column="seq" property="seq" />
+		<result column="school" property="school" />
+		<result column="country" property="country" />
+	</resultMap>
+	
+	<resultMap type="adto" id="addressMap">
+		<!-- 
+			컬럼 매핑
+			- select의 컬럼 > (연결) > adto의 Setter
+			- id: PK 매핑 용도
+			- result: 일반 컬럼 용도  
+		-->
+		<id column="seq" property="seq" />
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+		<result column="address" property="address" />
+		<result column="gender" property="gender" />
+		<association property="info" resultMap="infoMap"></association>
+	</resultMap>
+	
+	<select id="m18b" resultMap="addressMap">
+		select * from tblAddress a
+			left outer join tblInfo i
+				on a.seq = i.seq
+	</select>
+	
+	<select id="m19a" resultType="com.test.mybatis.model.AddressMemoDTO">
+		
+		select
+			a.seq as addrseq, name, age, address, gender,
+			m.seq as mseq, memo, regdate, aseq
+		from tblAddress a
+			left outer join tblMemo m
+				on a.seq = m.aseq
+			
+	</select>
+	
+	<select id="m19b" resultType="adto">
+		select * from tblAddress
+	</select>
+	
+	<select id="m19bs" parameterType="String" resultType="com.test.mybatis.model.MemoDTO">
+		select * from tblMemo
+			where aseq = #{seq}
+	</select>
+	
+	<resultMap type="com.test.mybatis.model.MemoDTO" id="memoMap">
+		<id column="mseq" property="seq" />
+		<result column="memo" property="memo" />
+		<result column="regdate" property="regdate" />
+		<result column="aseq" property="aseq" />
+	</resultMap>
+	
+	<resultMap type="adto" id="addressMap2">
+		<id column="addrseq" property="seq"/>
+		<result column="name" property="name" />
+		<result column="age" property="age" />
+		<result column="address" property="address" />
+		<result column="gender" property="gender" />
+		
+		<collection property="memo" resultMap="memoMap"></collection>
+		
+	</resultMap>
+	
+	<select id="m19c" resultMap="addressMap2">
+		select
+			a.seq as addrseq, name, age, address, gender,
+			m.seq as mseq, memo, regdate, aseq
+		from tblAddress a
+			left outer join tblMemo m
+				on a.seq = m.aseq
+	</select>
+	
+	
 </mapper>
+
+
+
+
+
+
+
 
 
 

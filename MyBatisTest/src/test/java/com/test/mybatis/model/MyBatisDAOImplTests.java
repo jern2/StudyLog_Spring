@@ -4,6 +4,7 @@ import static org.junit.Assert.assertEquals;
 import static org.junit.Assert.assertNotNull;
 import static org.junit.Assert.assertNull;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.junit.Test;
@@ -105,7 +106,7 @@ public class MyBatisDAOImplTests {
 		//3. 성별로 검색
 		//select * from tblAddress where 1=1 and age > '20' and gender = 'm' and address like '%' || '강남' || '%' 
 		AddressDTO dto = new AddressDTO();
-		dto.setAge("20");
+		//dto.setAge("20");
 		dto.setAddress("강남");
 		dto.setGender("m");
 		
@@ -113,7 +114,115 @@ public class MyBatisDAOImplTests {
 		System.out.println(list);
 		System.out.println(list.size());
 	}
-
+	
+	@Test
+	public void m14() {
+		
+		List<AddressDTO> list = dao.m14("m");
+		
+		System.out.println(list);
+		System.out.println(list.size());
+		
+	}
+	
+	@Test
+	public void m15() {
+		
+		List<String> search = new ArrayList<String>();
+		search.add("영업부");
+		search.add("총무부");
+		search.add("개발부");
+		
+		List<InsaDTO> list = dao.m15(search);
+		
+		System.out.println(list);
+		System.out.println(list.size());
+		
+	}
+	
+	@Test
+	public void m16() {
+		
+		AddressDTO dto1 = new AddressDTO();
+		dto1.setName("라라라");
+		dto1.setAge("20");
+		dto1.setAddress("서울시");
+		dto1.setGender("m");
+		
+		AddressDTO dto2 = new AddressDTO();
+		dto2.setName("마마마");
+		dto2.setAge("20");
+		dto2.setAddress("서울시");
+		dto2.setGender("m");
+		
+		List<AddressDTO> list = new ArrayList<>();
+		list.add(dto1);
+		list.add(dto2);
+		
+		dao.m16(list);
+		
+	}
+	
+	@Test
+	public void m17() {
+		
+		//고객 - 구매이력 - 구매
+		//1    - 1,A      - A
+		
+		//1. insert
+		//2. 방금 insert한 레코드의 PK 가져오기
+		
+		//일반적인 방법
+		//1. insert
+		//2. select max(PK)
+		
+		AddressDTO dto = new AddressDTO();
+		dto.setName("바바바");
+		dto.setAge("20");
+		dto.setAddress("서울시");
+		dto.setGender("m");
+		
+		//스레드 업무
+//		dao.m17add(dto);
+//		int seq = dao.m17get();
+//		
+//		System.out.println(seq);		
+		
+		dao.m17add2(dto);
+		System.out.println(dto);
+		
+	}
+	
+	@Test
+	public void m18a() {
+		
+		//join의 결과 > DTO 새로 정의 = AddressDTO + InfoDTO
+		//- 단순함(쉬움)
+		//- DTO 많이 생김;;
+		List<AddressInfoDTO> list = dao.m18a();
+		
+		System.out.println(list);
+		System.out.println(list.size()); //10
+		
+		for (AddressInfoDTO dto : list) {
+			System.out.println(dto);
+			System.out.println();
+		}
+		
+	}
+	
+	@Test
+	public void m18b() {
+		
+		List<AddressDTO> list = dao.m18b();
+		
+		for (AddressDTO dto : list) {
+			System.out.println(dto);
+			System.out.println();
+		}
+		
+	}
+	
 }
 
 
