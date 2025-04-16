@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<!-- src/main/resources > mappers > rest.xml -->
+<mapper namespace="rest">
+
+	<select id="time" resultType="String">
+		select sysdate from dual
+	</select>
+	
+	<select id="get" resultType="com.test.rest.model.AddressDTO">
+		select * from tblAddress
+			where age = (select max(age) from tblAddress)
+					and rownum = 1
+	</select>
+	
+	<select id="m5" resultType="com.test.rest.model.AddressDTO">
+		select * from tblAddress
+	</select>
+	
+</mapper>
+
+
+
+
+
+
+
+
+
+
+
+
