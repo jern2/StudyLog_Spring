@@ -1,0 +1,51 @@
+# FoodTest
+- 맛집 즐겨찾기
+	- 맛집명
+	- 맛집 위치
+	- 추가 정보
+
+## 프로젝트 생성
+- "FoodTest" + Spring MVC Project > "com.test.food" > Finish
+
+## 프로젝트 설정
+- 자바 버전 > 11
+	- pom.xml(메이븐 설정 파일)
+	- Project facets
+- 스프링 버전 > 5.0.7
+	- pom.xml
+- Servlet 버전 > 3.1.0
+- JSP 버전 > 2.3.3
+- 롬복 추가
+- log4j 버전 > 1.2.17
+- jUnit 버전 > 4.12
+
+## MyBatis 설정
+- MyBatis 의존성 추가 > 4개
+- DBCP 의존성 추가 > 1개
+- Log4j2 의존성 추가 > 1개
+- 설정
+	- root-context.xml
+	- src/main/resources > log4j.xml, log4jdbc.log4j2.properties 복사
+	- src/main/resources > mappers > *.xml
+	- src/main/resources > config > mybatis-config.xml
+- 단위 테스트
+	- src/test/java > "com.test.code.model" > "DBTests.java"	
+
+## REST 설정
+- 의존성 추가 > 1개
+
+## 파일
+- FoodTest > "script.sql"
+- "com.test.food.controller" > "MainController.java"
+- "com.test.food.model" > "FoodDAO.java"
+                        > "CategoryDTO.java"
+                        > "FoodDTO.java"
+                        > "MenuDTO.java"
+- views > "main.jsp"
+
+
+
+
+
+
+	

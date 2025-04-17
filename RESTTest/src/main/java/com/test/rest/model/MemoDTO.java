@@ -9,15 +9,15 @@ import lombok.ToString;
 @Getter
 @Setter
 @ToString
-public class AddressDTO {
+public class MemoDTO {
 	private String seq;
-	private String name;
-	private String age;
-	private String address;
-	private String gender;
-	
-	private List<MemoDTO> memo;
+	private String memo;
+	private String regdate;
+	private String aseq;
 }
+
+
+
 
 
 

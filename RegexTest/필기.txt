@@ -1,0 +1,45 @@
+# Regular Expression
+- 정규표현식 + 코드
+
+## 프로젝트 생성
+- "RegexTest" + Spring MVC Project > "com.test.regex" > Finish
+
+## 기본 설정
+- 자바 버전 > 11
+	- pom.xml(메이븐 설정 파일)
+	- Project facets
+- 스프링 버전 > 5.0.7
+	- pom.xml
+- Servlet 버전 > 3.1.0
+- JSP 버전 > 2.3.3
+- 롬복 추가
+- log4j 버전 > 1.2.17
+- jUnit 버전 > 4.12
+
+## 파일
+- "com.test.regex.controller" > "MainController.java"
+                              > "Ex01.java"
+- views > "ex01.jsp"
+
+## 정규 표현식 사용
+1. 자바에서
+2. SQL에서
+3. JavaScript에서
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
