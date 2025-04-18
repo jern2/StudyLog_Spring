@@ -27,13 +27,13 @@ create table tblCode (
 create sequence seqCode;
 
 
+select * from tblAddress a inner join tblMemo m on a.seq = m.aseq where a.seq=2;  
 
 
 
 
 
-
-
+select * from tbladdress
 
 
 

@@ -4,7 +4,11 @@
   "https://mybatis.org/dtd/mybatis-3-config.dtd">
 
 <configuration>
-	
+	<typeAliases>
+		<typeAlias type="com.test.food.model.CategoryDTO" alias="cdto" />
+		<typeAlias type="com.test.food.model.FoodDTO" alias="fdto" />
+		<typeAlias type="com.test.food.model.MenuDTO" alias="mdto" />
+	</typeAliases>
 </configuration>
 
 
