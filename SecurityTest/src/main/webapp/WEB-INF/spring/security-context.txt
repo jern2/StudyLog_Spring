@@ -1,0 +1,12 @@
+<!-- 10. 계정 추가 -->
+<security:authentication-manager>
+	<security:authentication-provider>
+		<security:user-service>
+			<security:user name="hong" password="{noop}1111" authorities="ROLE_MEMBER"/>
+			<!-- 11. 관리자 추가 -->
+			<security:user name="admin" password="{noop}1111" authorities="ROLE_ADMIN,ROLE_MEMBER"/>
+		</security:user-service>
+	</security:authentication-provider>
+</security:authentication-manager>
+<!-- 10. 계정 추가 --> 
+<!-- 9. 기본 로그인 설정(인증 + 허가) -->

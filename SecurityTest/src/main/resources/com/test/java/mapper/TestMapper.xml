@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.test.java.mapper.TestMapper">
+	
+	<select id="time" resultType="String">
+		select sysdate from dual
+	</select>
+	
+	<insert id="add" parameterType="com.test.java.model.MemberDTO">
+		insert into member (memberid, memberpw, membername, enabled, email, gender, regdate) values (#{memberid}, #{memberpw}, #{membername}, default, #{email}, #{gender}, default)
+	</insert>
+	
+</mapper>
+
+
+
+
+
+
+
+
+

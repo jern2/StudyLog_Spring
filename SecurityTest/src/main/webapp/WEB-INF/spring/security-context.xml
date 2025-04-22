@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+	xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+	xmlns:security="http://www.springframework.org/schema/security"
+	xsi:schemaLocation="http://www.springframework.org/schema/security http://www.springframework.org/schema/security/spring-security.xsd
+		http://www.springframework.org/schema/beans http://www.springframework.org/schema/beans/spring-beans.xsd">
+
+	<!-- security-context.xml -->
+	
+	<!-- 403 핸들러 -->
+	<bean id="customAccessDeniedHandler" class="com.test.java.auth.CustomAccessDeniedHandler"></bean>
+	
+	<!-- 로그인 성공 처리 핸들러 -->
+	<bean id="customLoginSuccessHandler" class="com.test.java.auth.CustomLoginSuccessHandler"></bean>
+	
+	<!-- PasswordEncoder -->
+	<!-- <bean id="customNoOpPasswordEncoder" class="com.test.java.auth.CustomNoOpPasswordEncoder"></bean> -->
+	
+	<!-- PasswordEncoder: blowfish -->
+	<bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
+	
+	
+	<!-- 5. 기본 설정 -->
+	<!-- 
+	<security:http>
+		<security:form-login/>
+	</security:http>
+	
+	<security:authentication-manager>
+	</security:authentication-manager> 
+	-->
+	<!-- 5. 기본 설정 -->
+	
+	
+	<!-- 9. 기본 로그인 설정(인증 + 허가) -->
+	<!-- 허가 + 인증 -->
+	<security:http>
+		<security:intercept-url pattern="/index.do" access="permitAll" />
+		<security:intercept-url pattern="/member.do" access="hasRole('ROLE_MEMBER')" />
+		<security:intercept-url pattern="/admin.do" access="hasRole('ROLE_ADMIN')" />
+		
+		<!-- 12. 403 처리 -->
+		<!-- <security:access-denied-handler error-page="/accesserror.do" /> -->
+		<security:access-denied-handler ref="customAccessDeniedHandler" />
+		
+		<!-- 기본 설정: 자동 생성 로그인 페이지 -->
+		<!-- <security:form-login/> -->
+		
+		<!-- 13. 커스텀 로그인 페이지 사용 -->
+		<!-- <security:form-login login-page="/customlogin.do" /> -->
+		
+		<!-- 13. CSRF 공격 -->
+		<!-- <security:csrf disabled="true" /> -->
+		
+		<!-- 14. 커스텀 로그인 성공 후 처리 핸들러 -->
+		<security:form-login login-page="/customlogin.do" authentication-success-handler-ref="customLoginSuccessHandler" />
+		
+		<!-- 15. 로그아웃 -->
+		<security:logout logout-url="/customlogout.do" invalidate-session="true" logout-success-url="/index.do" />
+		
+	</security:http>
+	
+	<!-- 17. JDBC 기반 인증 방식 -->
+	<security:authentication-manager>
+		<security:authentication-provider>
+			<!-- <security:jdbc-user-service data-source-ref="dataSource"/> -->
+			<!-- <security:password-encoder ref="customNoOpPasswordEncoder" /> -->
+			<security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select memberid as username, memberpw as password, enabled from member where memberid = ?" authorities-by-username-query="select memberid as username, auth as authority from member_auth where memberid = ?" />
+			<security:password-encoder ref="bCryptPasswordEncoder" />
+		</security:authentication-provider>
+	</security:authentication-manager>
+
+	
+</beans>
+
+
+
+
+
+
+
+
+

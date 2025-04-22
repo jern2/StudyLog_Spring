@@ -1,0 +1,296 @@
+# Spring Security
+- 스프링 기반 애플리케이션의 보안을 담당하는 하위 프레임워크
+- 보안(인증, 허가, 권한 관리 등)
+- 인증: 사용자가 누구인지를 확인하는 작업(로그인)
+- 허가: 인증된 사용자가 어떤 자원에 접근할 수 있는지 검사
+- 서블릿 필터 + 스프링 인터셉터 
+
+## 프로젝트 생성
+- "SecurityTest" + Spring MVC Project > "com.test.java" > Finish
+
+## 프로젝트 설정
+- 자바 버전 > 11
+	- pom.xml(메이븐 설정 파일)
+	- Project facets
+- 스프링 버전 > 5.0.7
+	- pom.xml
+- Servlet 버전 > 3.1.0
+- JSP 버전 > 2.3.3
+- 롬복 추가
+- log4j 버전 > 1.2.17
+- jUnit 버전 > 4.12
+
+## MyBatis
+- MyBatis 의존성 추가 > 4개
+- DBCP 의존성 추가 > 1개
+- Log4j2 의존성 추가 > 1개
+- 설정
+	- root-context.xml
+	- src/main/resources > log4j.xml, log4jdbc.log4j2.properties 복사
+- 인터페이스 매퍼
+	- "com.test.java.mapper" > "TestMapper.java"(I)
+	- src/main/resources > "com" > "test" > "java" > "mapper" > "TestMapper.xml"
+- 단위 테스트
+	- src/test/java > "com.test.java.mapper" > "TestMapperTests.java"
+
+## 인코딩 필터
+- web.xml
+
+--------------------------------------------------------- 기존 설정
+
+## 스프링 시큐리티 설정
+
+1. 의존성 추가
+- 4개
+<dependency>
+	<groupId>org.springframework.security</groupId>
+	<artifactId>spring-security-core</artifactId>
+	<version>${org.springframework-version}</version>
+</dependency>
+<dependency>
+	<groupId>org.springframework.security</groupId>
+	<artifactId>spring-security-config</artifactId>
+	<version>${org.springframework-version}</version>
+</dependency>
+<dependency>
+	<groupId>org.springframework.security</groupId>
+	<artifactId>spring-security-web</artifactId>
+	<version>${org.springframework-version}</version>
+</dependency>
+<dependency>
+	<groupId>org.springframework.security</groupId>
+	<artifactId>spring-security-taglibs</artifactId>
+	<version>${org.springframework-version}</version>
+</dependency>
+
+2. 스프링 시큐리티 설정 파일
+- webapp/WEB-INF/spring/security-context.xml
+- root-context.xml, servlet-context.xml 동일한 설정 파일
+- 기존 컨텍스트와 분리해서 구성 추천
+- New > Spring Bean Configuration File
+
+
+3. 시큐리티 필터 추가
+- web.xml
+- 스프링 시큐리티가 스프링 MVC에서 동작할 수 있도록
+<filter>
+		<filter-name>springSecurityFilterChain</filter-name>
+		<filter-class>org.springframework.web.filter.DelegatingFilterProxy</filter-class>
+</filter>
+<filter-mapping>
+	<filter-name>springSecurityFilterChain</filter-name>
+	<servlet-name>appServlet</servlet-name>
+</filter-mapping>
+
+
+4. 실행
+- 프로젝트 > 오른쪽 버튼 > Run As > Run on Server
+- No bean named 'springSecurityFilterChain' available
+- 해결 > web.xml > contextConfigLocation > security-context.xml 등록
+- 여전히 에러 발생
+
+5. security-context.xml 기본 설정
+<security:http>
+	<security:form-login/>
+</security:http>
+
+<security:authentication-manager>
+</security:authentication-manager>
+- 다시 실행 > 에러가 안나는지 확인
+
+
+6. 테스트 URI 설계
+- "/index.do"	> 인증(O), 인증(X) > 모든 사용자 접근 가능
+- "/member.do"	> 인증(O) > 인증 받은 사용자(회원)만 접근 가능
+- "/admin.do"	> 인증(O) > 인증 받은 사용자 중 관리자 권한이 있는 사용자만 접근 가능
+
+
+7. 파일 생성
+- "com.test.java.controller" > "TestController.java"
+- views > "index.jsp"
+        > "member.jsp"
+        > "admin.jsp"
+- views > "inc" > "header.jsp"
+- 실행 > 페이지 확인
+
+
+8. 스프링 시큐리티 구성 요소(security-context.xml에서 사용)
+
+- AuthenticationManger
+	- 인증 매니저
+	- 스프링 시큐리티 중심 역할
+	- 인증을 담당한다.
+	- AuthenticationManger <- ProviderManger <-> AuthenticationProvider
+
+- AuthenticationProvider
+	- 인증 제공자
+	- 실제로 인증 작업을 진행(로그인 관련 작업)
+
+- UserDetailsService
+	- 사용자 정보 + 사용자 권한 > 관리 객체
+	- AuthenticationManger <- ProviderManger <-> AuthenticationProvider <-> UserDetailsService
+
+
+9. 로그인, 로그아웃 구현
+- security-context.xml
+- <security:intercept-url pattern="" access="" />
+	- pattern: 접근 가능한 URI
+	- access: 허가 설정
+- 실행(index.do, member.do) > 권한 없음 > http://localhost:8090/java/login
+
+
+10. 단순 로그인 구현
+- http://localhost:8090/java/login 자동 생성 로그인 페이지를 사용
+- 계정? > XML(security-context.xml) 정의 > 인 메모리 방식 > 운영(X), 테스트용(O)
+- security-context.xml 
+
+<security:authentication-manager>
+	<security:authentication-provider>
+		<security:user-service>
+			<security:user name="hong" password="1111" authorities="ROLE_MEMBER"/>
+		</security:user-service>
+	</security:authentication-provider>
+</security:authentication-manager>
+
+- 스프링 시큐리티에서의 username 의미 > id
+- 일반 시스템(user id) == 스프링 시큐리티(user name)
+
+- 실행 > member.do > hong 로그인 시도
+- 위의 실행 에러 발생
+	- There is no PasswordEncoder mapped for the id "null"
+	- 스프링 시큐리티 4까지 > PasswordEncoder 선택 사항
+	- 스프링 시큐리티 5이후 > PasswordEncoder 필수 사항
+	- 우선 테스트를 위해서 임시로 PasswordEncoder 무시하도록 설정
+		> <user name="hong" password="{noop}1111">
+		
+- 실행 > member.do > hong 로그인 시도
+
+- 로그아웃
+	- 개발자 도구 > Application > Cookies > JSESSIONID > 삭제
+
+
+11. 관리자 추가
+- security-context.xml
+- 실행 > 익명, hong, admin > 접근 테스트
+- 익명 > index(O), member(X), admin(X)
+- hong > index(O), member(O), admin(403-권한없음)
+- admin > index(O), member(O), admin(O)
+
+
+12. 접근 권한 메시지 처리
+- 로그인을 안 한 상태에서 접근 불가능한 URI 접근 > 로그인 페이지로 이동
+- 로그인을 한 상태에서 접근 불가능한 URI 접근 > 에러 발생(403)
+
+12.1 접근 제한 대해 AccessDeniedHandler를 직접 구현하거나
+12.2 특정한 URI를 지정할 수 있다.
+
+
+- 접근 제한 페이지 생성
+- com.test.java.controller > "AuthController.java"
+- views > "auth" > "accesserror.jsp"
+- 위의 URI를 403 에러와 연결하기 > security-context.xml
+
+
+- AccessDeniedHandler 직접 구현
+- 403에 대한 추가 업무가 필요하면 구현, 필요없으면 구현 안해도 됨 
+- "com.test.java.auth" > "CustomAccessDeniedHandler.java"
+- 위의 핸들러를 403 에러와 연결하기 > security-context.xml
+
+
+
+
+13. 커스텀 로그인 페이지 구현
+- 자동 생성 로그인 페이지 사용(X) > 직접 구현한 로그인 페이지 사용(O)
+- 12번 처럼 커스텀 페이지 연결
+
+- AuthController.java > URI 추가
+- views > auth > "customlogin.jsp"
+
+- security-context.xml > 커스텀 로그인 페이지 연결
+- 예약된 표현
+	- <form action="/java/login">
+	- <input name="username">
+	- <input name="password">
+
+- 실행 > 실패 > 이유 > CSRF(Cross-site request forgery)
+	- CSRF > 항상 POST 요청에 발생
+- CSRF 설정을 무시하고 테스트
+- CSRF 설정을 하고 테스트
+	- 토큰 추가
+
+
+
+14. 로그인 성공 > 후속 동작 구현
+- 로그인을 성공한 후 특정한 동작을 하고 싶을 때 > Custom Handler 구현
+- com.test.java.auth > "CustomLoginSuccessHandler.java"
+- security-context.xml > 커스텀 핸들러 연결
+
+- 익명 > Member 클릭 > 로그인 페이지 > hong > Member 페이지
+- 익명 > Member 클릭 > 로그인 페이지 > admin > Member 페이지
+- 익명 > Admin 클릭 > 로그인 페이지 > hong > Admin 페이지 > 403
+- 익명 > Admin 클릭 > 로그인 페이지 > admin > Admin 페이지
+
+
+
+15. 로그아웃
+- 로그인("/login"): 예약된 URI
+- 로그아웃("/logout"): 예약된 URI
+- 커스텀 핸들러 구현
+- AuthController.java > URI 추가
+- views > auth > "customlogout.jsp"
+- security-context.xml > 연결
+
+
+
+16. 계정 관리
+- InMemoryUserDetailsManager 방식
+	- <security:user name="hong" password="{noop}1111" authorities="ROLE_MEMBER"/>
+	
+- JDBC 기반 계정 관리
+	- 미리 정해진 구조의 스키마 사용 > 편함 + 세부적인 조작 힘듬
+	- 사용자가 직접 만든 구조의 스키마 사용 > 세부적인 조작 가능
+
+- SecurityTest > "script.sql"
+
+
+17. 미리 정해진 구조의 스키마 사용
+- script.sql > users, authorities 테이블 생성 + 계정 생성(권한 부여)
+- security-context.xml > JDBC 기반의 인증 작업 설정
+- 실행 > There is no PasswordEncoder mapped for the id "null"
+
+
+18. PasswordEncoder 
+- 데이터베이스 사용 시 > 반드시 PasswordEncoder 사용
+- com.test.java.auth > "CustomNoOpPasswordEncoder.java"
+- security-context.xml > 연결
+
+
+
+19. 사용자가 직접 만든 구조의 스키마 사용
+- member, member_auth 테이블 추가
+- 암호 인코딩 > 계정 추가
+
+20. 사용자가 만든 테이블을 사용하도록 > SQL 작성
+
+21. 회원 가입
+- com.test.java.controller > "MemberController.java"
+- com.test.java.model > "AuthDTO.java"
+- com.test.java.mapper > "MemberMapper.java"(I)
+- src/main/resources > com > test > java > mapper > "MemberMapper.xml"
+
+- views > "register.jsp"
+        > "registerok.jsp"
+
+
+
+
+
+
+
+
+
+
+
+
+
+
