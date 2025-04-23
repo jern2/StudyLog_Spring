@@ -10,3 +10,19 @@
 </security:authentication-manager>
 <!-- 10. 계정 추가 --> 
 <!-- 9. 기본 로그인 설정(인증 + 허가) -->
+
+
+
+<!-- 17. JDBC 기반 인증 방식 -->
+<security:authentication-manager>
+	<security:authentication-provider>
+		<!-- <security:jdbc-user-service data-source-ref="dataSource"/> -->
+		<!-- <security:password-encoder ref="customNoOpPasswordEncoder" /> -->
+		<security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select memberid as username, memberpw as password, enabled from member where memberid = ?" authorities-by-username-query="select memberid as username, auth as authority from member_auth where memberid = ?" />
+		<security:password-encoder ref="bCryptPasswordEncoder" />
+	</security:authentication-provider>
+</security:authentication-manager>
+
+
+
+

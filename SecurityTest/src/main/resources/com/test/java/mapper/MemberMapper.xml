@@ -13,6 +13,34 @@
 		insert into member_auth (memberid, auth) values (#{memberid}, #{auth})
 	</insert>
 	
+	<resultMap type="com.test.java.model.AuthDTO" id="authMap">
+		<id column="amemberid" property="memberid" />
+		<result column="auth" property="auth" />
+	</resultMap>
+	
+	<resultMap type="com.test.java.model.MemberDTO" id="memberMap">
+		<id column="mmemberid" property="memberid" />
+		<result column="memberpw" property="memberpw" />
+		<result column="membername" property="membername" />
+		<result column="enabled" property="enabled" />
+		<result column="email" property="email" />
+		<result column="gender" property="gender" />
+		<result column="regdate" property="regdate" />
+		<collection property="authList" resultMap="authMap"></collection>
+	</resultMap>
+	
+	<select id="get" parameterType="String" resultMap="memberMap">
+		select
+			m.*,
+			a.*,
+			m.memberid as mmemberid,
+			a.memberid as amemberid
+		from member m
+			inner join member_auth a
+				on m.memberid = a.memberid
+					where m.memberid = #{userid}
+	</select>
+	
 </mapper>
 
 

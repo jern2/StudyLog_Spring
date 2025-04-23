@@ -1,0 +1,53 @@
+<%@page language="java" contentType="text/html; charset=UTF-8" pageEncoding="UTF-8"%>
+<%@taglib prefix="c" uri="http://java.sun.com/jsp/jstl/core" %>
+<%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
+
+<style>
+	<sec:authorize access="hasRole('ROLE_MEMBER')">
+	.main::before {
+		color: cornflowerblue;
+	}
+	</sec:authorize>
+	
+	<sec:authorize access="hasRole('ROLE_ADMIN')">
+	.main::before {
+		color: tomato;
+	}
+	</sec:authorize>
+	
+	<sec:authorize access="hasRole('ROLE_GUEST')">
+	.main::before {
+		color: gold;
+	}
+	</sec:authorize>
+</style>
+
+<!-- header.jsp -->
+<header>
+	<h1 class="main">
+		Spring Project 
+		<small>
+			Toy
+			<sec:authorize access="isAuthenticated()">
+			::
+			<sec:authentication property="principal.username"/>
+			</sec:authorize>			
+		</small>
+	</h1>
+	<ul>
+		<li><a href="/project">Home</a></li>
+		<li><a href="/project/member/add">Register</a></li>
+		<li><a href="/project/member/login">Login</a></li>
+		<li><a href="/project/member/logout">Logout</a></li>
+		<li><a href="/project/member/remove">Unregister</a></li>
+	</ul>
+</header>
+
+
+
+
+
+
+
+
+

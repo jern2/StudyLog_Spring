@@ -19,6 +19,9 @@
 	<!-- PasswordEncoder: blowfish -->
 	<bean id="bCryptPasswordEncoder" class="org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder"></bean>
 	
+	<!-- 유저 정보 객체 > 제공 서비스 객체 -->
+	<bean id="customUserDetailsService" class="com.test.java.auth.CustomUserDetailsService"></bean>
+	
 	
 	<!-- 5. 기본 설정 -->
 	<!-- 
@@ -60,16 +63,13 @@
 		
 	</security:http>
 	
-	<!-- 17. JDBC 기반 인증 방식 -->
+	
+	<!-- 22. 인증 관리 > 사용자 DB + 사용자 객체 -->
 	<security:authentication-manager>
-		<security:authentication-provider>
-			<!-- <security:jdbc-user-service data-source-ref="dataSource"/> -->
-			<!-- <security:password-encoder ref="customNoOpPasswordEncoder" /> -->
-			<security:jdbc-user-service data-source-ref="dataSource" users-by-username-query="select memberid as username, memberpw as password, enabled from member where memberid = ?" authorities-by-username-query="select memberid as username, auth as authority from member_auth where memberid = ?" />
+		<security:authentication-provider user-service-ref="customUserDetailsService">
 			<security:password-encoder ref="bCryptPasswordEncoder" />
 		</security:authentication-provider>
 	</security:authentication-manager>
-
 	
 </beans>
 

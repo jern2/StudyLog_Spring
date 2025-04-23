@@ -282,7 +282,9 @@
         > "registerok.jsp"
 
 
-
+22. 사용자 계정 정보
+- com.test.java.auth > "CustomUserDetailsService.java"
+- com.test.java.dto > "CustomUser.java"(DTO)
 
 
 

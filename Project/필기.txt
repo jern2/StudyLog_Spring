@@ -1,0 +1,125 @@
+# Project
+- 토이 프로젝트
+	- Spring MVC Project(v)
+	- MyBatis(v)
+	- Spring Security(v)
+	- Spring Tiles(v)
+	- REST API(v)
+	- WebSocket(v)
+- 회원관리
+- 게시판
+
+## 프로젝트 생성
+- "Project" + Spring MVC Project > "com.test.project" > Finish
+
+## 프로젝트 설정
+- 자바 버전 > 11
+	- pom.xml(메이븐 설정 파일)
+	- Project facets
+- 스프링 버전 > 5.0.7
+	- pom.xml
+- Servlet 버전 > 3.1.0
+- JSP 버전 > 2.3.3
+- 롬복 추가
+- log4j 버전 > 1.2.17
+- jUnit 버전 > 4.12
+
+## MyBatis
+- MyBatis 의존성 추가 > 4개
+- DBCP 의존성 추가 > 1개
+- Log4j2 의존성 추가 > 1개
+- 설정
+	- root-context.xml
+	- src/main/resources > log4j.xml, log4jdbc.log4j2.properties 복사
+- 인터페이스 매퍼
+	- "com.test.project.mapper" > "TestMapper.java"(I)
+	- src/main/resources > "com" > "test" > "project" > "mapper" > "TestMapper.xml"
+- 단위 테스트
+	- src/test/java > "com.test.project.mapper" > "TestMapperTests.java"
+
+## Tiles
+- 의존성 4개 추가
+- servlet-context.xml
+- tiles.xml
+
+## REST
+- 의존성 1개 추가
+
+## WebSocket
+- 의존성 2개 추가
+
+## Security
+- 의존성 4개 추가
+- webapp/WEB-INF/spring/security-context.xml
+- web.xml > security-context.xml 등록하기
+- web.xml > 인코딩 필터, 시큐리티 필터 추가하기
+
+- 프로젝트 실행
+
+## 파일 업로드
+- 파일 저장 폴더: webapp > resources > "files"  //게시판
+- 파일 저장 폴더: webapp > resources > "pic"    //프로필 사진
+- web.xml
+- servlet-context.xml
+
+------------------------------------------------- 설정 완료
+
+## 파일
+- Project > "script.sql"
+
+## 프로젝트 구조 & 레이아웃
+- "com.test.project.controller"
+- "com.test.project.model"
+- "com.test.project.auth"
+- "com.test.project.mapper"
+- "com.test.project.rest"
+
+- views > "inc"
+        > "member"
+        > "admin"
+        > "board"
+        > "layout"
+
+- webapp > resources > "files"
+                     > "pic"
+
+
+- com.test.project.controller > "MainController.java"
+                              > "MemberController.java"
+                              > "BoardController.java"
+
+- com.test.project.model > "MemberDTO.java"
+                         > "AuthDTO.java"
+                         > "BoardDTO.java"
+
+- views > layout > "main.jsp"
+- views > inc > "asset.jsp"
+              > "header.jsp"
+- views > "main" > "index.jsp"              
+
+
+## 업무 구현
+
+## 회원 가입
+- com.test.project.controller > MemberController.java
+- views > member > "add.jsp"
+- com.test.project.mapper > "MemberMapper.java"(I)
+- src/main/resources > com.test.project.mapper > "MemberMapper.xml"
+- com.test.project.rest > "RestMemberController.java"
+
+## 로그인/로그아웃
+- com.test.project.auth > "CustomAccessDeniedHandler.java"
+                        > "CustomLoginSuccessHandler.java"
+                        > "CustomUserDetailsService.java"
+- com.test.project.model > "CustomUser.java"					
+- views > member > "login.jsp" 
+                 > "logout.jsp"
+                 
+
+
+
+
+
+
+
+

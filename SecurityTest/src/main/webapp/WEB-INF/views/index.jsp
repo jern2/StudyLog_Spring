@@ -20,10 +20,37 @@
 	
 	<div>모든 사용자가 접근 가능합니다.</div>
 	
-	<div class="message">
+	<sec:authorize access="isAuthenticated()">
+	<div class="message" title="principal">
 		<!-- 자바의 Authentication: principal -->
 		<sec:authentication property="principal"/>
 	</div>
+	
+	<div class="message" title="MemberDTO">
+		<sec:authentication property="principal.member"/>
+	</div>
+	
+	<div class="message" title="사용자 아이디">
+		<sec:authentication property="principal.username"/>
+	</div>
+	
+	<div class="message" title="사용자 아이디">
+		<sec:authentication property="principal.member.memberid"/>
+	</div>
+	
+	<div class="message" title="사용자 이름">
+		<sec:authentication property="principal.member.membername"/>
+	</div>
+	
+	<div class="message" title="사용자 권한">
+		<sec:authentication property="principal.member.authList"/>
+	</div>
+	
+	<div class="message" title="사용자 권한">
+		<sec:authentication property="principal.authorities"/>
+	</div>
+	</sec:authorize>
+	
 	
 	<script src="https://code.jquery.com/jquery-3.7.1.js"></script>
 	<script src="https://bit.ly/4cMuheh"></script>
