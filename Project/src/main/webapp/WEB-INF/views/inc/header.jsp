@@ -3,7 +3,7 @@
 <%@taglib prefix="sec" uri="http://www.springframework.org/security/tags" %>
 
 <style>
-	<sec:authorize access="hasRole('ROLE_MEMBER')">
+	<sec:authorize access="hasRole('ROLE_MEMBER') and not hasRole('ROLE_ADMIN')">
 	.main::before {
 		color: cornflowerblue;
 	}
@@ -40,6 +40,7 @@
 		<li><a href="/project/member/login">Login</a></li>
 		<li><a href="/project/member/logout">Logout</a></li>
 		<li><a href="/project/member/remove">Unregister</a></li>
+		<li><a href="/project/board/list">Board</a></li>
 	</ul>
 </header>
 

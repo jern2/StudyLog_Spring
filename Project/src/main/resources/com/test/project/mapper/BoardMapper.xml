@@ -1,0 +1,62 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+  PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+  "https://mybatis.org/dtd/mybatis-3-mapper.dtd">
+  
+<mapper namespace="com.test.project.mapper.BoardMapper">
+	
+	<!-- int add(BoardDTO dto); -->
+	<insert id="add" parameterType="bdto">
+		insert into tblBoard (seq, subject, content, regdate, readcount, id) values (seqBoard.nextVal, #{subject}, #{content}, default, default, #{id})
+	</insert>
+	
+	<!-- List<BoardDTO> list(HashMap<String, String> map); -->
+	<select id="list" resultType="bdto" parameterType="map">
+		
+		select * from vwBoard
+			<if test='search == "y"'>
+			where ${column} like '%' || #{word} || '%'
+			</if>
+		
+	</select>
+	
+	<!-- BoardDTO view(String seq); -->
+	<select id="view" parameterType="String" resultType="bdto">
+		select
+			tblBoard.*,
+			(select name from tblMember where id = tblBoard.id) as name
+		from tblBoard
+			where seq = #{seq}
+	</select>
+	
+	<!-- void addReadcount(String seq); -->
+	<update id="addReadcount" parameterType="String">
+		update tblBoard set
+			readcount = readcount + 1
+				where seq = #{seq}
+	</update>	
+	
+	<!-- int edit(BoardDTO bdto); -->
+	<update id="edit" parameterType="bdto">
+		update tblBoard set
+			subject = #{subject},
+			content = #{content}
+				where seq = #{seq}
+	</update>
+	
+	<!-- int del(BoardDTO bdto); -->
+	<delete id="del" parameterType="bdto">
+		delete from tblBoard
+			where seq = #{seq}
+	</delete>
+	
+</mapper>
+
+
+
+
+
+
+
+
+

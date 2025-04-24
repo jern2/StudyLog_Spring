@@ -17,7 +17,7 @@
 	<!-- 유저 정보 객체 > 제공 서비스 객체 -->
 	<bean id="customUserDetailsService" class="com.test.project.auth.CustomUserDetailsService"></bean>
 	
-	<security:http>
+	<security:http use-expressions="true">
 		
 		<!-- URI + 권한 -->
 		<security:intercept-url pattern="/" access="permitAll" />
@@ -26,6 +26,23 @@
 		<security:intercept-url pattern="/member/id/**" access="permitAll" />
 		<security:intercept-url pattern="/member/login" access="permitAll" />
 		<security:intercept-url pattern="/member/logout" access="permitAll" />
+		
+		<!-- 게시판(임시) -->
+		
+		<security:intercept-url pattern="/board/**" access="permitAll" /> 
+		
+		
+		<!-- 
+		<security:intercept-url pattern="/board/list" access="permitAll" /> 
+		<security:intercept-url pattern="/board/view" access="permitAll" /> 
+		<security:intercept-url pattern="/board/add" access="authenticated" /> 
+		<security:intercept-url pattern="/board/addok" access="authenticated" /> 
+		<security:intercept-url pattern="/board/edit" access="authenticated" /> 
+		<security:intercept-url pattern="/board/editok" access="authenticated" /> 
+		<security:intercept-url pattern="/board/del" access="authenticated" /> 
+		<security:intercept-url pattern="/board/delok" access="authenticated" /> 
+		-->
+		
 		
 		<!-- deny-by-deafult 전략 -->
 		<security:intercept-url pattern="/**" access="authenticated" />
@@ -39,7 +56,6 @@
 		<!-- 로그아웃 -->
 		<security:logout logout-url="/member/logout" invalidate-session="true" logout-success-url="/" />
 	
-		<security:form-login/>
 	</security:http>
 	
 	<security:authentication-manager>

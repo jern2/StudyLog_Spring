@@ -5,13 +5,6 @@
 <!-- index.jsp -->
 <h2>제목 <small>부제목</small></h2>
 
-<div>콘텐츠</div>
-
-
-
-
-
-
-
+<div>test</div>
 
 

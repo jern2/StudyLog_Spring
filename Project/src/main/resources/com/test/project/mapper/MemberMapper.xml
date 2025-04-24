@@ -18,7 +18,7 @@
 	</insert>
 	
 	<resultMap type="adto" id="authMap">
-		<id column="aid" property="id" />
+		<result column="aid" property="id" />
 		<result column="auth" property="auth" />
 	</resultMap>
 	

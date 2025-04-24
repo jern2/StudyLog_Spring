@@ -116,6 +116,37 @@
                  > "logout.jsp"
                  
 
+## 게시판
+- com.test.project.controller > BoardController.java
+- com.test.project.model > BoardDTO.java
+- com.test.project.mapper > "BoardMapper.java"(I)
+                          > "BoardMapper.xml"
+- views > board > "list.jsp"
+                > "add.jsp"
+                > "view.jsp"
+                > "edit.jsp"
+                > "del.jsp"
+
+## 게시판 정책
+- /list: 익명(O), 회원(O) 
+- /view: 익명(O), 회원(O)
+- /add : 익명(X), 회원(O)
+- /edit: 익명(X), 회원(O), 본인만(O), 관리자(O)
+- /del : 익명(X), 회원(O), 본인만(O), 관리자(O)
+
+
+## 게시판 검색
+
+
+## 페이징
+- SQL 구현
+- 오라클 기준
+	- 11g 이전: rownum 
+	- 12c 이후: rownum or row limiting(fetch rows)
+
+
+
+
 
 
 

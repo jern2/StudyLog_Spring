@@ -13,8 +13,14 @@ public class CustomAccessDeniedHandler implements AccessDeniedHandler {
 
 	@Override
 	public void handle(HttpServletRequest request, HttpServletResponse response, AccessDeniedException accessDeniedException) throws IOException, ServletException {
-				
-		//response.sendRedirect("/project/");
+		
+		//403
+		
+		///project/board/edit
+		System.out.println(request.getRequestURI());
+		
+		response.sendRedirect("/project/");
+		
 	}
 
 }

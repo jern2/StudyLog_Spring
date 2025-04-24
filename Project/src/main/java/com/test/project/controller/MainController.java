@@ -12,6 +12,12 @@ public class MainController {
 		return "main.index"; //JSP(X), definition(O)
 	}
 	
+	@GetMapping("/test")
+	public String test() {
+		
+		return "main.test";
+	}
+	
 }
 
 

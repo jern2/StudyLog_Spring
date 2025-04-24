@@ -22,11 +22,28 @@
 <input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
 </form>
 
+<hr>
 
+<form method="POST" action="/project/login">
+<button class="login">로그인(홍길동.일반유저)</button>
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+<input type="hidden" name="username" value="hong">
+<input type="hidden" name="password" value="1111">
+</form>
 
+<form method="POST" action="/project/login">
+<button class="login">로그인(테스트.관리자)</button>
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+<input type="hidden" name="username" value="test">
+<input type="hidden" name="password" value="1111">
+</form>
 
-
-
+<form method="POST" action="/project/login">
+<button class="login">로그인(강아지.임시유저)</button>
+<input type="hidden" name="${_csrf.parameterName}" value="${_csrf.token}">
+<input type="hidden" name="username" value="dog">
+<input type="hidden" name="password" value="1111">
+</form>
 
 
 
