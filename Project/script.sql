@@ -79,18 +79,51 @@ from tblBoard
 
 -- 페이징
 -- A. rownum
+-- 보통
+-- 대용량 데이터(1,000만 이상) > 속도 저하
 select * from (select rownum as rnum, v.* from vwBoard v) 
     where rnum between 21 and 30;
 
 -- B. rownum
+-- A와 유사
+-- 대용량 데이터 > 속도 유지
 select * from (select rownum as rnum, v.* from vwBoard v where rownum <= 20) 
     where rnum >= 11;
 
 -- C. offset rows fetch
 -- - offset 건너뛸 레코드 수
 -- - fetch 반환할 레코드 수
+-- 대용량 데이터 > 속도 저하
+-- 코드 간결
+-- JPA > 11g이하(B방식) 12c이후(C방식)
 select * from vwBoard
     offset 20 rows fetch next 10 rows only;
+
+
+-- 댓글 테이블
+create table tblComment (
+    seq number primary key,                             --댓글번호(PK)
+    content varchar2(2000) not null,                    --내용
+    regdate date default sysdate not null,              --날짜
+    id varchar2(50) not null references tblMember(id),  --아이디(FK)
+    bseq number not null references tblBoard(seq)       --부모글번호(FK)
+);
+create sequence seqComment;
+
+
+select * from tblComment;
+
+
+select * from (select 
+        tblComment.*,
+        (select name from tblMember where id = tblComment.id) as name
+    from tblComment
+        where bseq = 290
+            order by seq desc)
+                offset 0 rows fetch next 5 rows only;
+
+
+
 
 
 

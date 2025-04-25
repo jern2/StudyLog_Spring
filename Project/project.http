@@ -1,0 +1,34 @@
+# project.http
+
+POST http://localhost:8090/project/comment
+Content-Type: application/json
+
+{
+    "content": "댓글입니다.",
+    "id": "hong",
+    "bseq": "290"
+}
+
+###
+
+GET http://localhost:8090/project/comment?bseq=290
+
+
+
+###
+
+GET http://localhost:8090/project/comment/9
+
+###
+
+PUT http://localhost:8090/project/comment/9
+Content-Type: application/json
+
+{
+    "content": "수정한 댓글입니다."
+}
+
+###
+
+DELETE http://localhost:8090/project/comment/9
+

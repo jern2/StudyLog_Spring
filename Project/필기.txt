@@ -142,11 +142,17 @@
 - SQL 구현
 - 오라클 기준
 	- 11g 이전: rownum 
-	- 12c 이후: rownum or row limiting(fetch rows)
+	- 12c 이후: rownum or row liimiting(fetch rows)
 
 
+## 댓글
+- tblComment
+- BoardController.java(X)
+- BoardMapper.java
+- com.test.project.model > "CommentDTO.java"
+- com.test.project.rest > "RestBoardController.java"
 
-
+- Project > "project.http"
 
 
 

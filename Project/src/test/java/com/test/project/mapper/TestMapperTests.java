@@ -2,14 +2,15 @@ package com.test.project.mapper;
 
 import static org.junit.Assert.assertNotNull;
 
+import org.junit.Ignore;
 import org.junit.Test;
 import org.junit.runner.RunWith;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.test.context.ContextConfiguration;
 import org.springframework.test.context.junit4.SpringJUnit4ClassRunner;
-import org.springframework.test.context.web.WebAppConfiguration;
 
 import com.test.project.model.BoardDTO;
+import com.test.project.model.CommentDTO;
 
 @RunWith(SpringJUnit4ClassRunner.class)
 @ContextConfiguration(locations={
@@ -28,6 +29,7 @@ public class TestMapperTests {
 		System.out.println(mapper.time());
 	}
 	
+	@Ignore
 	@Test
 	public void dummy() {
 		
@@ -46,6 +48,21 @@ public class TestMapperTests {
 			
 			bmapper.add(dto);
 			
+		}
+		
+	}
+	
+	@Ignore
+	@Test
+	public void dummyComment() {
+		
+		CommentDTO cdto = new CommentDTO();
+		cdto.setBseq("290");
+		cdto.setId("hong");
+		
+		for (int i=0; i<30; i++) {
+			cdto.setContent(i + "번째 댓글입니다.");
+			bmapper.cadd(cdto);
 		}
 		
 	}

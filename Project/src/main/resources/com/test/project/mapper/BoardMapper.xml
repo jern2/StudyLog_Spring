@@ -13,10 +13,15 @@
 	<!-- List<BoardDTO> list(HashMap<String, String> map); -->
 	<select id="list" resultType="bdto" parameterType="map">
 		
-		select * from vwBoard
-			<if test='search == "y"'>
-			where ${column} like '%' || #{word} || '%'
-			</if>
+		
+		select * from 
+			(select * from vwBoard
+				<if test='search == "y"'>
+				where ${column} like '%' || #{word} || '%'
+				</if>
+			)
+			offset #{offset} rows fetch next #{pageSize} rows only
+		
 		
 	</select>
 	
@@ -47,6 +52,66 @@
 	<!-- int del(BoardDTO bdto); -->
 	<delete id="del" parameterType="bdto">
 		delete from tblBoard
+			where seq = #{seq}
+	</delete>
+	
+	<!-- int getTotalCount(HashMap<String, String> map); -->
+	<select id="getTotalCount" parameterType="map" resultType="Integer">
+		select count(*) from tblBoard
+			<if test='search == "y"'>
+			where ${column} like '%' || #{word} || '%'
+			</if>
+	</select>
+	
+	<!-- List<CommentDTO> clist(String seq); -->
+	<select id="clist" parameterType="map" resultType="cdto">
+		<!-- 
+		select 
+			tblComment.*,
+			(select name from tblMember where id = tblComment.id) as name
+		from tblComment
+			where bseq = #{bseq}
+				order by seq desc 
+		-->
+		
+		select * from (select 
+	        tblComment.*,
+	        (select name from tblMember where id = tblComment.id) as name
+	    from tblComment
+	        where bseq = #{bseq}
+	            order by seq desc)
+	                offset #{offset} rows fetch next 5 rows only
+	</select>
+	
+	<!-- CommentDTO cget(String seq); -->
+	<select id="cget" parameterType="String" resultType="cdto">
+		select * from tblComment
+			where seq = #{seq}
+	</select>
+	
+	<!-- void cadd(CommentDTO dto); -->
+	<insert id="cadd" parameterType="cdto">
+	
+		<selectKey order="BEFORE" keyProperty="seq" resultType="String">
+			select 
+				seqComment.nextVal
+			from dual
+		</selectKey>
+			
+		insert into tblComment (seq, content, regdate, id, bseq)
+		values (#{seq}, #{content}, default, #{id}, #{bseq})
+	</insert>
+	
+	<!-- int cedit(CommentDTO cdto); -->
+	<update id="cedit" parameterType="cdto">
+		update tblComment set
+			content = #{content}
+				where seq = #{seq}
+	</update>
+
+	<!-- int cdel(String seq); -->
+	<delete id="cdel" parameterType="String">
+		delete from tblComment 
 			where seq = #{seq}
 	</delete>
 	

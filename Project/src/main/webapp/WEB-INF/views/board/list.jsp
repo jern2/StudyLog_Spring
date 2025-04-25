@@ -30,6 +30,9 @@
 		margin: 2px;
 	}
 	
+	#pagebar {
+		text-align: center;
+	}
 	
 </style>
 
@@ -37,8 +40,24 @@
 <h2>게시판 <small>목록보기</small></h2>
 
 <c:if test="${map.search.equals('y')}">
-<div>'${map.word}'(으)로 검색한 결과 ${list.size()}개의 게시물이 있습니다.</div>
+<div>'${map.word}'(으)로 검색한 결과 ${map.totalCount}개의 게시물이 있습니다.</div>
 </c:if>
+
+<%-- 
+<div id="pagebar">
+	<input type="number" class="short" id="page" value="${map.nowPage}" min="1" max="${map.totalPage}">
+	<input type="button" value=" 이동하기 " onclick="location.href='/project/board/list?page=' + $('#page').val();">
+</div> 
+--%>
+<%-- 
+<div id="pagebar">
+	<select onchange="location.href='/project/board/list?page=' + this.value;">
+		<c:forEach begin="1" end="${map.totalPage}" var="i">
+		<option value="${i}" <c:if test="${i == map.nowPage}">selected</c:if>>${i}페이지</option>
+		</c:forEach>
+	</select>
+</div> 
+--%>
 
 <table id="list">
 	<tr>
@@ -61,7 +80,7 @@
 	<tr>
 		<td>${bdto.seq}</td>
 		<td>
-			<a href="/project/board/view?seq=${bdto.seq}&search=${map.search}&column=${map.column}&word=${map.word}">${bdto.subject}</a>
+			<a href="/project/board/view?seq=${bdto.seq}&search=${map.search}&column=${map.column}&word=${map.word}&page=${map.nowPage}">${bdto.subject}</a>
 			<c:if test="${bdto.isnew < 1}">
 			<span style="font-size: .8rem; color: tomato;">new</span>
 			</c:if>
@@ -91,6 +110,9 @@
 <input type="text" name="word" required placeholder="검색할 단어를 입력하세요.">
 <input type="submit" value=" 검색하기 ">
 </form>
+
+<!-- 페이지바 -->
+<div id="pagebar">${map.pagebar}</div>
 
 <div>
 	<sec:authorize access="isAuthenticated()">
