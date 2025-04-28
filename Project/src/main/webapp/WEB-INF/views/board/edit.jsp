@@ -15,6 +15,12 @@
 		<th>내용</th>
 		<td><textarea name="content" class="full" required>${bdto.content}</textarea></td>
 	</tr>
+	<tr>
+		<th>파일</th>
+		<td>
+			<input type="file" name="attach" class="full" accept="image/*">
+		</td>
+	</tr>
 </table>
 <div>
 	<button class="edit">수정하기</button>

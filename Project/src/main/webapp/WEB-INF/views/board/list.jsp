@@ -43,6 +43,10 @@
 <div>'${map.word}'(으)로 검색한 결과 ${map.totalCount}개의 게시물이 있습니다.</div>
 </c:if>
 
+<c:if test="${map.tag != ''}">
+<div>태그 '${map.tag}'(으)로 검색한 결과입니다.</div>
+</c:if>
+
 <%-- 
 <div id="pagebar">
 	<input type="number" class="short" id="page" value="${map.nowPage}" min="1" max="${map.totalPage}">
@@ -80,10 +84,21 @@
 	<tr>
 		<td>${bdto.seq}</td>
 		<td>
+			
 			<a href="/project/board/view?seq=${bdto.seq}&search=${map.search}&column=${map.column}&word=${map.word}&page=${map.nowPage}">${bdto.subject}</a>
+			
+			<c:if test="${not empty bdto.attachName}">
+			<i class="fa-solid fa-floppy-disk"></i>
+			</c:if>
+			
+			<c:if test="${bdto.commentcount > 0}">
+			<span class="badge left yellow">${bdto.commentcount}</span>
+			</c:if>
+			
 			<c:if test="${bdto.isnew < 1}">
 			<span style="font-size: .8rem; color: tomato;">new</span>
 			</c:if>
+			
 		</td>
 		<td>${bdto.name}</td>
 		<td>

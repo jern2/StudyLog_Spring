@@ -43,6 +43,7 @@
 		<security:intercept-url pattern="/board/delok" access="authenticated" /> 
 		-->
 		
+		<security:intercept-url pattern="/admin/**" access="hasRole('ROLE_ADMIN')" />
 		
 		<!-- deny-by-deafult 전략 -->
 		<security:intercept-url pattern="/**" access="authenticated" />

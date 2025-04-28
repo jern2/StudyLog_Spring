@@ -10,6 +10,9 @@
 		<typeAlias type="com.test.project.model.AuthDTO" alias="adto"/>
 		<typeAlias type="com.test.project.model.BoardDTO" alias="bdto"/>
 		<typeAlias type="com.test.project.model.CommentDTO" alias="cdto"/>
+		
+		<typeAlias type="com.test.project.model.TagDTO" alias="tdto"/>
+		<typeAlias type="com.test.project.model.TaggingDTO" alias="tgdto"/>
 	</typeAliases>
 	
 </configuration>

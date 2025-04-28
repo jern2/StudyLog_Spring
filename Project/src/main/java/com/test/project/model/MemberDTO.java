@@ -21,6 +21,7 @@ public class MemberDTO {
 	private String ing;
 	
 	private List<AuthDTO> authList;
+	private String auth;
 }
 
 

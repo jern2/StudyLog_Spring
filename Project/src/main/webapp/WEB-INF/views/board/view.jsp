@@ -30,6 +30,22 @@
 		background-color: #EFEFEF;
 	}
 	
+	#attach {
+		max-width: 570px;
+		object-fit: contain;
+	}
+	
+	#map {
+		widtH: 570px;
+		height: 350px;
+	}
+	
+	.tagify {
+		border-color: #BBB;
+		width: calc(100% - 5px);
+		border-radius: 3px;
+	}
+	
 </style>
 
 <!-- board > view.jsp -->
@@ -45,6 +61,18 @@
 		<%-- <td><c:out value="${bdto.content}" /></td> --%>
 		<td>${bdto.content}</td>
 	</tr>
+	<c:if test="${not empty bdto.attachName}">
+	<tr>
+		<th>파일</th>
+		<td><img id="attach" src="/project/resources/files/${bdto.attachName}"></td>
+	</tr>
+	</c:if>
+	<c:if test="${not empty lat}">
+	<tr>
+		<th>위치</th>
+		<td><div id="map"></div></td>
+	</tr>
+	</c:if>
 	<tr>
 		<th>이름</th>
 		<td>${bdto.name}(${bdto.id})</td>
@@ -56,6 +84,10 @@
 	<tr>
 		<th>읽음</th>
 		<td>${bdto.readcount}</td>
+	</tr>
+	<tr>
+		<th>태그</th>
+		<td><input type="text" id="tag" value="${tags}"></td>
 	</tr>
 </table>
 
@@ -112,6 +144,11 @@
 	<button class="back" type="button" onclick="location.href='/project/board/list?search=${search}&column=${column}&word=${word}&page=${page}';">돌아가기</button>
 </div>
 
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify"></script>
+<script src="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.polyfills.min.js"></script>
+<link href="https://cdn.jsdelivr.net/npm/@yaireo/tagify/dist/tagify.css" rel="stylesheet" type="text/css" />
+
+<script type="text/javascript" src="//dapi.kakao.com/v2/maps/sdk.js?appkey=909d6d857bd3d609a81d02972cddd225"></script>
 <script>
 	
 	//댓글 쓰기
@@ -317,8 +354,42 @@
 		
 	}
 	
+	
+	<c:if test="${not empty lat}">
+	const container = document.getElementById('map');
+	const options = {
+		center: new kakao.maps.LatLng(37.499314, 127.033192),
+		level: 3
+	};
+	const map = new kakao.maps.Map(container, options);
+	
+	const path = '/project/resources/marker/studio.png';
+	const size = new kakao.maps.Size(48, 48);
+	const op = { offset: new kakao.maps.Point(24, 48) };
+	const img = new kakao.maps.MarkerImage(path, size, op);
+	
+	const m = new kakao.maps.Marker({
+		position: new kakao.maps.LatLng(${lat}, ${lng}),
+		image: img
+	});
+	
+	m.setMap(map);
+	map.panTo(new kakao.maps.LatLng(${lat}, ${lng}));
+	</c:if>
+	
+	
+	
+	const tagify = new Tagify(document.getElementById('tag'));
+	
+	tagify.on('click', (evt) => {
+		//alert(evt.detail.data.value);
+		location.href = '/project/board/list?tag=' + evt.detail.data.value;
+	});
+	
+	
+	
+	
 </script>
-
 
 
 

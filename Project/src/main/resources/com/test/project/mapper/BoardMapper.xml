@@ -7,13 +7,18 @@
 	
 	<!-- int add(BoardDTO dto); -->
 	<insert id="add" parameterType="bdto">
-		insert into tblBoard (seq, subject, content, regdate, readcount, id) values (seqBoard.nextVal, #{subject}, #{content}, default, default, #{id})
+	
+		<selectKey keyProperty="seq" order="BEFORE" resultType="String">
+			select seqBoard.nextVal from dual
+		</selectKey>
+	
+		insert into tblBoard (seq, subject, content, regdate, readcount, id, attach) values (#{seq}, #{subject}, #{content}, default, default, #{id}, #{attachName})
 	</insert>
 	
 	<!-- List<BoardDTO> list(HashMap<String, String> map); -->
 	<select id="list" resultType="bdto" parameterType="map">
 		
-		
+		<if test='tag == ""'>
 		select * from 
 			(select * from vwBoard
 				<if test='search == "y"'>
@@ -21,7 +26,18 @@
 				</if>
 			)
 			offset #{offset} rows fetch next #{pageSize} rows only
-		
+		</if>
+		<if test='tag != ""'>
+		select
+		    *
+		from vwBoard b
+		    inner join tblTagging tg
+		        on b.seq = tg.bseq
+		            inner join tblTag t
+		                on t.seq = tg.tseq
+		                    where t.tag = #{tag}
+		                    	order by b.seq desc
+		</if>
 		
 	</select>
 	
@@ -29,6 +45,7 @@
 	<select id="view" parameterType="String" resultType="bdto">
 		select
 			tblBoard.*,
+			tblBoard.attach as attachName,
 			(select name from tblMember where id = tblBoard.id) as name
 		from tblBoard
 			where seq = #{seq}
@@ -114,6 +131,51 @@
 		delete from tblComment 
 			where seq = #{seq}
 	</delete>
+	
+	<!-- int cdel(String seq); -->
+	<delete id="cbdel" parameterType="String">
+		delete from tblComment
+			where bseq = #{bseq}
+	</delete>
+	
+	<!-- boolean existTag(String tagName); -->
+	<select id="existTag" parameterType="String" resultType="Boolean">
+		select count(*) from tblTag
+			where tag = #{tagName}
+	</select>
+	
+	<!-- TagDTO getTag(String tagName); -->
+	<select id="getTag" parameterType="String" resultType="tdto">
+		select * from tblTag
+			where tag = #{tagName}
+	</select>
+	
+	<!-- void addTag(TagDTO tdto); -->
+	<insert id="addTag" parameterType="tdto">
+		
+		<selectKey keyProperty="seq" order="BEFORE" resultType="String">
+			select seqTag.nextVal from dual		
+		</selectKey>
+		
+		insert into tblTag (seq, tag)
+			values (#{seq}, #{tag})
+	</insert>
+	
+	<!-- void addTagging(TaggingDTO tgdto); -->
+	<insert id="addTagging" parameterType="tgdto">
+		insert into tblTagging (seq, bseq, tseq)
+			values (seqTagging.nextVal, #{bseq}, #{tseq})
+	</insert>	
+	
+	<!-- List<String> getTags(String seq); -->
+	<select id="getTags" parameterType="String" resultType="String">
+		select
+			t.tag
+		from tblTag t
+			inner join tblTagging tg
+				on t.seq = tg.tseq
+					where tg.bseq = #{seq}
+	</select>
 	
 </mapper>
 

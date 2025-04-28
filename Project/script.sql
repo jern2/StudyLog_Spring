@@ -49,9 +49,13 @@ create table tblBoard (
     content varchar2(4000) not null,                    --내용
     regdate date default sysdate not null,              --날짜
     readcount number default 0 not null,                --조회수
-    id varchar2(50) not null references tblMember(id)   --아이디(FK)
+    id varchar2(50) not null references tblMember(id),  --아이디(FK)
+    attach varchar2(100) null                           --첨부파일
 );
 create sequence seqBoard;
+
+alter table tblBoard 
+    add (attach varchar2(100) null);
 
 select * from tblBoard;
 
@@ -71,7 +75,9 @@ as
 select
     seq, subject, id, regdate, readcount, content,
     (select name from tblMember where id = tblBoard.id) as name,
-    (sysdate - regdate) as isnew
+    (sysdate - regdate) as isnew,
+    (select count(*) from tblComment where bseq = tblBoard.seq) as commentcount,
+    attach as attachName
 from tblBoard
     order by seq desc;
 
@@ -123,6 +129,57 @@ select * from (select
                 offset 0 rows fetch next 5 rows only;
 
 
+select * from tblComment order by seq desc;
+
+
+delete from tblBoard where seq >= 41;
+commit;
+
+select * from tblBoard;
+
+select
+			tblBoard.*,
+			tblBoard.attachName as attach,
+			(select name from tblMember where id = tblBoard.id) as name
+		from tblBoard
+			where seq = 321;
+
+
+-- 태그
+create table tblTag (
+    seq number primary key,             --번호(PK)
+    tag varchar2(100) unique not null   --해시태그(UQ)
+);
+create sequence seqTag;
+
+-- 게시판 태그 연결
+create table tblTagging (
+    seq number primary key,                         --번호(PK)
+    bseq number not null references tblBoard(seq),  --글번호(FK)
+    tseq number not null references tblTag(seq)    --태그번호(FK)
+);
+create sequence seqTagging;
+
+
+select * from tblBoard order by seq desc;
+select * from tblTag order by seq desc;
+select * from tblTagging order by seq desc;
+
+select
+    *
+from vwBoard b
+    inner join tblTagging tg
+        on b.seq = tg.bseq
+            inner join tblTag t
+                on t.seq = tg.tseq
+                    where t.tag = '게시판';
+
+-- MEMBER, GUEST
+select 
+    a.* ,
+    (select auth from tblAuth where id = a.id) as auth
+from tblMember a
+    where (select count(*) from tblAuth where id = a.id) = 1;
 
 
 

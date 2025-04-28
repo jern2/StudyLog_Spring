@@ -35,12 +35,26 @@
 		</small>
 	</h1>
 	<ul>
+		
 		<li><a href="/project">Home</a></li>
+		
+		<sec:authorize access="isAnonymous()">
 		<li><a href="/project/member/add">Register</a></li>
 		<li><a href="/project/member/login">Login</a></li>
+		</sec:authorize>
+		
+		<li><a href="/project/board/list">Board</a></li>
+		
+		<sec:authorize access="isAuthenticated()">
 		<li><a href="/project/member/logout">Logout</a></li>
 		<li><a href="/project/member/remove">Unregister</a></li>
-		<li><a href="/project/board/list">Board</a></li>
+		
+		<sec:authorize access="hasRole('ROLE_ADMIN')">
+		<li><a href="/project/admin/admin">Admin</a></li>
+		</sec:authorize>
+		
+		</sec:authorize>
+		
 	</ul>
 </header>
 

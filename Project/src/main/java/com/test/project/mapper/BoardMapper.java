@@ -5,6 +5,8 @@ import java.util.List;
 
 import com.test.project.model.BoardDTO;
 import com.test.project.model.CommentDTO;
+import com.test.project.model.TagDTO;
+import com.test.project.model.TaggingDTO;
 
 public interface BoardMapper {
 
@@ -31,6 +33,18 @@ public interface BoardMapper {
 	int cedit(CommentDTO cdto);
 
 	int cdel(String seq);
+
+	int cbdel(String seq);
+
+	boolean existTag(String tagName);
+
+	TagDTO getTag(String tagName);
+
+	void addTag(TagDTO tdto);
+
+	void addTagging(TaggingDTO tgdto);
+
+	List<String> getTags(String seq);
 
 }
 
